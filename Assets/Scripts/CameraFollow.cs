@@ -1,0 +1,14 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CameraFollow : MonoBehaviour
+{
+    public GameObject player;
+    public GameObject cam;
+
+    public void Update()
+    {
+        cam.transform.position = new Vector3(player.transform.position.x, 20, player.transform.position.z);
+    }
+}
