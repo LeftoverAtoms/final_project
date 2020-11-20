@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MouseMovement : MonoBehaviour
 {
-    public GameObject player;
     public GameObject aim;
     public float mSpeed;
     public float kbSpeed;
