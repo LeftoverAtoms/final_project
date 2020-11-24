@@ -19,7 +19,13 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             Physics.Raycast(player.transform.position, player.transform.forward, 50);
-            Debug.DrawLine(player.transform.position, aim.transform.position);
+            Debug.DrawRay(player.transform.position, player.transform.forward * 50);
         }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "enemy")
+            Destroy(gameObject);
     }
 }
