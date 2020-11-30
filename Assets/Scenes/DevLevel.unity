@@ -135,9 +135,9 @@ GameObject:
   - component: {fileID: 273595119}
   - component: {fileID: 273595124}
   - component: {fileID: 273595118}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -795,6 +795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1728716666}
   aim: {fileID: 369729471}
+  enemy: {fileID: 273595117}
   speed: 0.125
 --- !u!65 &1728716668
 BoxCollider:

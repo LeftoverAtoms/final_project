@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public GameObject player;
     public GameObject aim;
+    public GameObject enemy;
     public float speed;
 
     public void FixedUpdate()
@@ -16,16 +17,22 @@ public class Player : MonoBehaviour
         float y = Input.GetAxis("Vertical");                                             //Gets keyboard Z input
         player.transform.Translate(x * speed, 0, y * speed, Space.World);                //Applies keyboard inputs
 
+        int layerMask = 1 << 8;
+        layerMask = ~layerMask;
+
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            Physics.Raycast(player.transform.position, player.transform.forward, 50);
-            Debug.DrawRay(player.transform.position, player.transform.forward * 50);
+            if (Physics.Raycast(player.transform.position, player.transform.forward, 50, layerMask))
+            {
+                Debug.DrawRay(player.transform.position, player.transform.forward * 50);
+                Destroy(enemy);
+            }
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision Collision)
     {
-        if (other.gameObject.tag == "enemy")
+        if (Collision.gameObject.tag == "Enemy")
             Destroy(gameObject);
     }
 }
