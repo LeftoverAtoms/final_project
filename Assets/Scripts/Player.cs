@@ -11,21 +11,21 @@ public class Player : MonoBehaviour
 
     public void FixedUpdate()
     {
-        player.transform.LookAt(aim.transform);                                          //Makes the player always look at the target
+        player.transform.LookAt(aim.transform);                                                    //Makes the player always look at the target
 
-        float x = Input.GetAxis("Horizontal");                                           //Gets keyboard X input
-        float y = Input.GetAxis("Vertical");                                             //Gets keyboard Z input
-        player.transform.Translate(x * speed, 0, y * speed, Space.World);                //Applies keyboard inputs
+        float x = Input.GetAxis("Horizontal");                                                     //Gets keyboard X input
+        float y = Input.GetAxis("Vertical");                                                       //Gets keyboard Z input
+        player.transform.Translate(x * speed, 0, y * speed, Space.World);                          //Applies keyboard inputs
 
-        int layerMask = 1 << 8;
-        layerMask = ~layerMask;
+        LayerMask mask = LayerMask.GetMask("Enemy");
+
+        RaycastHit hit;
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            if (Physics.Raycast(player.transform.position, player.transform.forward, 50, layerMask))
+            if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))
             {
-                Debug.DrawRay(player.transform.position, player.transform.forward * 50);
-                Destroy(enemy);
+                Destroy(hit.transform.gameObject);
             }
         }
     }
