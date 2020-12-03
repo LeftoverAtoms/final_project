@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public GameObject player;
     public GameObject aim;
     public GameObject enemy;
+    public ParticleSystem tracer;
     public float speed;
 
     public void FixedUpdate()
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
             {
                 Destroy(hit.transform.gameObject);
             }
+            tracer.Play();
         }
     }
 
