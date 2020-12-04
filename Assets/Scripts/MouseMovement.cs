@@ -10,23 +10,23 @@ public class MouseMovement : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;                             //Locks cursor
-        Cursor.visible = false;                                               //Hides cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void FixedUpdate()
     {
-        Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);   //Keeps mouse in view
+        Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
         pos.x = Mathf.Clamp01(pos.x);
         pos.y = Mathf.Clamp01(pos.y);
         transform.position = Camera.main.ViewportToWorldPoint(pos);
 
-        float kbx = Input.GetAxis("Horizontal");                              //Gets keyboard X input
-        float kby = Input.GetAxis("Vertical");                                //Gets keyboard Z input
+        float kbx = Input.GetAxis("Horizontal");
+        float kby = Input.GetAxis("Vertical");
 
-        float x = Input.GetAxis("Mouse X");                                   //Gets mouse X input
-        float y = Input.GetAxis("Mouse Y");                                   //Gets mouse Z input
-        aim.transform.Translate(x * mSpeed, 0, y * mSpeed);                   //Applies mouse inputs
-        aim.transform.Translate(kbx * kbSpeed, 0, kby * kbSpeed);             //Applies keyboard inputs
+        float x = Input.GetAxis("Mouse X");
+        float y = Input.GetAxis("Mouse Y");
+        aim.transform.Translate(x * mSpeed, 0, y * mSpeed);
+        aim.transform.Translate(kbx * kbSpeed, 0, kby * kbSpeed);
     }
 }

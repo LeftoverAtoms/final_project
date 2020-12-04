@@ -7,7 +7,8 @@ public class Player : MonoBehaviour
     public GameObject player;
     public GameObject aim;
     public GameObject enemy;
-    public ParticleSystem elimination;
+    public GameObject projectile;
+    public ParticleSystem Elimination;
     public float speed;
 
     void FixedUpdate()
@@ -24,10 +25,10 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
+            Projectile();
             if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))
             {
                 Destroy(hit.transform.gameObject);
-                elimination.Play();
             }
         }
 
@@ -37,9 +38,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    void Projectile()
+    {
+        Instantiate(projectile, new Vector3(0, 0, 0), Quaternion.identity);
+        //new Vector3(0, 0, 100);
+    }
+
     void OnCollisionEnter(Collision Collision)
     {
         if (Collision.gameObject.tag == "Enemy")
-            Destroy(gameObject);
+            Elimination.Play();
     }
 }

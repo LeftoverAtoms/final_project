@@ -7,6 +7,11 @@ public class Enemy : MonoBehaviour
 {
     public GameObject player;
 
+    void Start()
+    {
+        player = GameObject.FindWithTag("Player");
+    }
+
     void FixedUpdate()
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
