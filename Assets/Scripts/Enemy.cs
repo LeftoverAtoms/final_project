@@ -5,21 +5,11 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public Transform goal;
-
-    void Start()
-    {
-        Spawn(5);
-    }
+    public GameObject player;
 
     void FixedUpdate()
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
-        agent.destination = goal.position;
+        agent.destination = player.transform.position;
     }
-
-    void Spawn
-    {
-        Instantiate(prefab, transform.position, Quaternion.identity)
-    }  
 }

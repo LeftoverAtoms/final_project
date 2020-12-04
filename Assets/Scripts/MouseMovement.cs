@@ -8,13 +8,13 @@ public class MouseMovement : MonoBehaviour
     public float mSpeed;
     public float kbSpeed;
 
-    public void Start()
+    void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;                             //Locks cursor
         Cursor.visible = false;                                               //Hides cursor
     }
 
-    public void FixedUpdate()
+    void FixedUpdate()
     {
         Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);   //Keeps mouse in view
         pos.x = Mathf.Clamp01(pos.x);
