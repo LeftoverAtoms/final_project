@@ -39,12 +39,12 @@ public class player_script : MonoBehaviour
         {
             projectile_script.Projectile_Prefab_Spawn();
 
-            audioSource.PlayOneShot(TEMP_fire, 0.7F);
+            //audioSource.PlayOneShot(TEMP_fire, 0.7F);
 
             if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))
             {
                 Destroy(hit.transform.gameObject);
-                audioSource.PlayOneShot(TEMP_beep, 0.7F);
+                //audioSource.PlayOneShot(TEMP_beep, 0.7F);
                 Debug.Log("DAMGE_ENEMY");
             }
             has_shot = true;
