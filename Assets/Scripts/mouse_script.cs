@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseMovement : MonoBehaviour
+public class mouse_script : MonoBehaviour
 {
     public GameObject aim;
     public float mSpeed;
@@ -23,9 +23,9 @@ public class MouseMovement : MonoBehaviour
 
         float kbx = Input.GetAxis("Horizontal");
         float kby = Input.GetAxis("Vertical");
-
         float x = Input.GetAxis("Mouse X");
         float y = Input.GetAxis("Mouse Y");
+
         aim.transform.Translate(x * mSpeed, 0, y * mSpeed);
         aim.transform.Translate(kbx * kbSpeed, 0, kby * kbSpeed);
     }
