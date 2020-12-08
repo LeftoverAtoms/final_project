@@ -814,13 +814,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858284255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad51448fb26570d498a5c9959cc08937, type: 3}
+  m_Script: {fileID: 11500000, guid: bad8c56f51259ce4682927dc5aa12029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 723255469}
   enemy: {fileID: 1972118150687532913, guid: 58e4536bd577c4f4f821bd2dbfe1fbfb, type: 3}
+  spawn_rate: 1
   currentTime: 0
-  spawn_rate: 5
   has_spawned: 0
 --- !u!1 &1887191321
 GameObject:
