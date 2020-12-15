@@ -7,6 +7,7 @@ TagManager:
   - enemy
   - geometry
   - projectile
+  - spawn
   layers:
   - Default
   - TransparentFX

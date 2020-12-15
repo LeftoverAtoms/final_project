@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class player_script : MonoBehaviour
 {
+    public projectile_prefab_script _projectile_prefab_script;
+    public entity_spawn_script _entity_spawn_script;
+
     public GameObject player;
     public GameObject aim;
     public GameObject enemy;
-    public projectile_prefab_script projectile_script;
 
     public float speed;
 
@@ -15,36 +17,25 @@ public class player_script : MonoBehaviour
     private bool has_shot;
     public float rof;
 
-    public AudioClip TEMP_fire;
-    public AudioClip TEMP_beep;
-    AudioSource audioSource;
-
-    void Start() //CALLED AT START
+    void FixedUpdate()
     {
-        audioSource = GetComponent<AudioSource>();
+        ProjectileLogic();
+        PlayerController();
     }
 
-    void FixedUpdate() //UPDATES EVERY FRAME
-    {
-        ProjectileLogic(); //RAYCAST AND PREFAB SPAWNING
-        PlayerController(); //PLAYER CONTROLLER
-    }
-
-    void ProjectileLogic() //RAYCAST AND PREFAB SPAWNING
+    void ProjectileLogic()
     {
         LayerMask mask = LayerMask.GetMask("enemy");
         RaycastHit hit;
 
         if (Input.GetKey(KeyCode.Mouse0) && has_shot == false)
         {
-            projectile_script.Projectile_Prefab_Spawn();
-
-            //audioSource.PlayOneShot(TEMP_fire, 0.7F);
+            _projectile_prefab_script.Projectile_Prefab_Spawn();
 
             if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))
             {
                 Destroy(hit.transform.gameObject);
-                //audioSource.PlayOneShot(TEMP_beep, 0.7F);
+                _entity_spawn_script.currentEnemyCount--;
                 Debug.Log("DAMGE_ENEMY");
             }
             has_shot = true;
@@ -61,7 +52,7 @@ public class player_script : MonoBehaviour
         }
     }
 
-    void PlayerController() //PLAYER CONTROLLER
+    void PlayerController()
     {
         player.transform.LookAt(aim.transform);
         float x = Input.GetAxis("Horizontal");
@@ -69,7 +60,7 @@ public class player_script : MonoBehaviour
         player.transform.Translate(x * speed, 0, y * speed, Space.World);
     }
 
-    void OnCollisionEnter(Collision Collision) //COLLISION DETECTION
+    void OnCollisionEnter(Collision Collision)
     {
         if (Collision.gameObject.tag == "enemy")
         {

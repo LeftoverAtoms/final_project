@@ -10,13 +10,13 @@ public class enemy_script : MonoBehaviour
 
     private NavMeshAgent agent;
 
-    void Start() //CALLED AT START
+    void Start()
     {
         player = GameObject.FindWithTag("Player");
         agent = enemy.GetComponent<NavMeshAgent>();
     }
 
-    void FixedUpdate() //UPDATES EVERY FRAME
+    void FixedUpdate()
     {
         agent.destination = player.transform.position;
     }

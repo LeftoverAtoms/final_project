@@ -157,14 +157,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d8b67e4d063d849bf22e16212cd455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _projectile_prefab_script: {fileID: 1858284256}
+  _entity_spawn_script: {fileID: 1858284258}
   player: {fileID: 723255469}
   aim: {fileID: 1994780354}
   enemy: {fileID: 1972118150687532913, guid: 58e4536bd577c4f4f821bd2dbfe1fbfb, type: 3}
-  projectile_script: {fileID: 1858284256}
   speed: 0.125
   rof: 0.125
-  TEMP_fire: {fileID: 8300000, guid: edf7331216ecb1340b649123073d61ee, type: 3}
-  TEMP_beep: {fileID: 8300000, guid: 107abcaaf42d50b4794066ecf529ce54, type: 3}
 --- !u!54 &723255471
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -818,9 +817,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 1972118150687532913, guid: 58e4536bd577c4f4f821bd2dbfe1fbfb, type: 3}
-  spawn_rate: 1
-  currentTime: 0
-  has_spawned: 0
+  currentEnemyCount: 0
+  currentEnemyTotal: 15
 --- !u!1 &1887191321
 GameObject:
   m_ObjectHideFlags: 0
