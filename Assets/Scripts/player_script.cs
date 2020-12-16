@@ -4,49 +4,57 @@ using UnityEngine;
 
 public class player_script : MonoBehaviour
 {
-    public projectile_prefab_script _projectile_prefab_script;
     public entity_spawn_script _entity_spawn_script;
+    public projectile_script _projectile_script;
+    public global_variables _global_variables;
+    public mouse_script _mouse_script;
 
+    public GameObject mouseCursor;
     public GameObject player;
-    public GameObject aim;
     public GameObject enemy;
 
-    public float speed;
+    private float moveSpeed = 0.125f;
 
+    private float rateOfFire = 0.125f;
     private float currentTime;
-    private bool has_shot;
-    public float rof;
+    private bool hasShot;
+
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 
     void FixedUpdate()
     {
-        ProjectileLogic();
+        _mouse_script.MouseController();
+        Projectile();
         PlayerController();
     }
 
-    void ProjectileLogic()
+    void Projectile()
     {
         LayerMask mask = LayerMask.GetMask("enemy");
         RaycastHit hit;
 
-        if (Input.GetKey(KeyCode.Mouse0) && has_shot == false)
+        if (Input.GetKey(KeyCode.Mouse0) && hasShot == false)
         {
-            _projectile_prefab_script.Projectile_Prefab_Spawn();
-
-            if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))
+            _projectile_script.ProjectilePrefab();                                                                     //Spawns the projectile prefab.
+            if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))               //Checks if the raycast hit an enemy and if so it deletes it.
             {
                 Destroy(hit.transform.gameObject);
-                _entity_spawn_script.currentEnemyCount--;
+                VariableChanges();
                 Debug.Log("DAMGE_ENEMY");
             }
-            has_shot = true;
+            hasShot = true;
         }
 
-        if (has_shot)
+        if (hasShot)                                                                                                   //If "hasShot" = true then counts up to compare the time with "rateOfFire" and resets.
         {
             currentTime = currentTime + 1 * Time.deltaTime;
-            if (currentTime > rof)
+            if (currentTime > rateOfFire)
             {
-                has_shot = false;
+                hasShot = false;
                 currentTime = 0;
             }
         }
@@ -54,15 +62,22 @@ public class player_script : MonoBehaviour
 
     void PlayerController()
     {
-        player.transform.LookAt(aim.transform);
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        player.transform.Translate(x * speed, 0, y * speed, Space.World);
+        float keyboardX = Input.GetAxis("Horizontal");                                                                 //Input for keyboard.
+        float keyboardY = Input.GetAxis("Vertical");                                                                   //Input for keyboard.
+        player.transform.LookAt(mouseCursor.transform.position);                                                       //Mouse movement dictates where the player will look.
+        player.transform.Translate(keyboardX * moveSpeed, 0, keyboardY * moveSpeed, Space.World);                      //Player movement.
+        mouseCursor.transform.Translate(keyboardX * moveSpeed, 0, keyboardY * moveSpeed, Space.World);                 //Janky way to make the mouseCursor GameObject to move with the player.
+    }
+
+    void VariableChanges()
+    {
+        _global_variables.playerScore = _global_variables.playerScore + 50;
+        _entity_spawn_script.currentEnemyCount--;
     }
 
     void OnCollisionEnter(Collision Collision)
     {
-        if (Collision.gameObject.tag == "enemy")
+        if (Collision.gameObject.tag == "enemy")                                                                       //Checks if enemy touched the player.
         {
             Debug.Log("DAMAGE_PLAYER");
         }

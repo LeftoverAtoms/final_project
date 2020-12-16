@@ -4,24 +4,35 @@ using UnityEngine;
 
 public class entity_spawn_script : MonoBehaviour
 {
-    private GameObject instantiate_enemy;
+    public GameObject instantiate_enemy;
     public GameObject enemy;
 
+    public float milestoneEnemyCounter;
     public float currentEnemyCount;
-    public float currentEnemyTotal;
+    public float currentEnemyLimit = 5;
 
     void FixedUpdate()
     {
         EnemySpawn();
     }
 
-    void EnemySpawn()
+    public void EnemySpawn()
     {
-        Vector3 spawnPos = new Vector3(Random.Range(15, -15), 0, Random.Range(15, -15));
-        if (currentEnemyCount < currentEnemyTotal)
+        if (currentEnemyCount < currentEnemyLimit)                                                                     //If the current amount of enemies exceeds the max enemies then nothing happens until more room is available.
         {
-            instantiate_enemy = Instantiate(enemy, spawnPos, transform.rotation);
+            instantiate_enemy = Instantiate(enemy, new Vector3(0, 0, 20), transform.rotation);
+            milestoneEnemyCounter++;
             currentEnemyCount++;
+        }
+        else
+        {
+            return;
+        }
+
+        if (milestoneEnemyCounter > 10)
+        {
+            currentEnemyLimit = currentEnemyLimit + 2;
+            milestoneEnemyCounter = 0;
         }
     }
 }

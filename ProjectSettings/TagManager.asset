@@ -4,10 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - mouseCursor
+  - level
   - enemy
-  - geometry
-  - projectile
-  - spawn
   layers:
   - Default
   - TransparentFX
@@ -17,9 +16,9 @@ TagManager:
   - UI
   - 
   - 
+  - projectile
   - enemy
   - player
-  - projectile
   - 
   - 
   - 

@@ -5,10 +5,10 @@ using UnityEngine.AI;
 
 public class enemy_script : MonoBehaviour
 {
-    public GameObject player;
-    public GameObject enemy;
-
     private NavMeshAgent agent;
+
+    private GameObject player;
+    public GameObject enemy;
 
     void Start()
     {

@@ -1,0 +1,2 @@
+Shared variables should be placed into a global script to make everything more orderly.
+Optimize if statements to improve fps.
