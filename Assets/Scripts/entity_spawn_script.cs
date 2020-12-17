@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class entity_spawn_script : MonoBehaviour
 {
+    private float milestoneEnemyCounter;
+    private float currentEnemyLimit = 5;
+    public float currentEnemyCount;
+
     public GameObject instantiate_enemy;
     public GameObject enemy;
 
-    public float milestoneEnemyCounter;
-    public float currentEnemyCount;
-    public float currentEnemyLimit = 5;
+    private int randomSpawn;
 
     void FixedUpdate()
     {
@@ -20,7 +22,23 @@ public class entity_spawn_script : MonoBehaviour
     {
         if (currentEnemyCount < currentEnemyLimit)                                                                     //If the current amount of enemies exceeds the max enemies then nothing happens until more room is available.
         {
-            instantiate_enemy = Instantiate(enemy, new Vector3(0, 0, 20), transform.rotation);
+            randomSpawn = Random.Range(0, 4);
+            if (randomSpawn == 0)
+            {
+                instantiate_enemy = Instantiate(enemy, new Vector3(30, 0, 0), transform.rotation);
+            }
+            else if (randomSpawn == 1)
+            {
+                instantiate_enemy = Instantiate(enemy, new Vector3(-30, 0, 0), transform.rotation);
+            }
+            else if (randomSpawn == 2)
+            {
+                instantiate_enemy = Instantiate(enemy, new Vector3(0, 0, 30), transform.rotation);
+            }
+            else if (randomSpawn == 3)
+            {
+                instantiate_enemy = Instantiate(enemy, new Vector3(0, 0, -30), transform.rotation);
+            }
             milestoneEnemyCounter++;
             currentEnemyCount++;
         }
@@ -29,9 +47,9 @@ public class entity_spawn_script : MonoBehaviour
             return;
         }
 
-        if (milestoneEnemyCounter > 10)
+        if (milestoneEnemyCounter > 25)
         {
-            currentEnemyLimit = currentEnemyLimit + 2;
+            currentEnemyLimit = currentEnemyLimit + 5;
             milestoneEnemyCounter = 0;
         }
     }

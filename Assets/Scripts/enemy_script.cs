@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class enemy_script : MonoBehaviour
 {
     private NavMeshAgent agent;
-
     private GameObject player;
     public GameObject enemy;
 

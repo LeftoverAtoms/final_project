@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class player_script : MonoBehaviour
 {
-    public entity_spawn_script _entity_spawn_script;
-    public projectile_script _projectile_script;
-    public global_variables _global_variables;
-    public mouse_script _mouse_script;
+    public entity_spawn_script entity_spawn_script;
+    public projectile_script projectile_script;
+    public global_script global_script;
+    public mouse_script mouse_script;
 
     public GameObject mouseCursor;
     public GameObject player;
     public GameObject enemy;
+
+    private float healthCurrentTime;
+    private int maxHealth = 100;
+    private float health = 100;
+    public float displayHealth;
 
     private float moveSpeed = 0.125f;
 
@@ -19,16 +24,11 @@ public class player_script : MonoBehaviour
     private float currentTime;
     private bool hasShot;
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
     void FixedUpdate()
     {
-        _mouse_script.MouseController();
+        mouse_script.MouseController();
         Projectile();
+        HealthSystem();
         PlayerController();
     }
 
@@ -39,12 +39,13 @@ public class player_script : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0) && hasShot == false)
         {
-            _projectile_script.ProjectilePrefab();                                                                     //Spawns the projectile prefab.
+            projectile_script.ProjectilePrefab();                                                                      //Spawns the projectile prefab.
             if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))               //Checks if the raycast hit an enemy and if so it deletes it.
             {
                 Destroy(hit.transform.gameObject);
-                VariableChanges();
                 Debug.Log("DAMGE_ENEMY");
+                global_script.playerScore = global_script.playerScore + 50;
+                entity_spawn_script.currentEnemyCount--;
             }
             hasShot = true;
         }
@@ -69,17 +70,38 @@ public class player_script : MonoBehaviour
         mouseCursor.transform.Translate(keyboardX * moveSpeed, 0, keyboardY * moveSpeed, Space.World);                 //Janky way to make the mouseCursor GameObject to move with the player.
     }
 
-    void VariableChanges()
+    void HealthSystem()
     {
-        _global_variables.playerScore = _global_variables.playerScore + 50;
-        _entity_spawn_script.currentEnemyCount--;
+        displayHealth = (Mathf.RoundToInt(health));
+        if (health < maxHealth)
+        {
+            healthCurrentTime = healthCurrentTime + 1 * Time.deltaTime;
+            if (healthCurrentTime > 1)
+            {
+                health = health + 25 * Time.deltaTime;
+                if (health == maxHealth)
+                {
+                    healthCurrentTime = 0;
+                }
+                else if (health > maxHealth)
+                {
+                    return;
+                }
+            }
+        }
+
+        if (health == 0)
+        {
+            player.SetActive(false);
+            mouseCursor.SetActive(false);
+        }
     }
 
     void OnCollisionEnter(Collision Collision)
     {
-        if (Collision.gameObject.tag == "enemy")                                                                       //Checks if enemy touched the player.
+        if (Collision.gameObject.tag == "enemy")
         {
-            Debug.Log("DAMAGE_PLAYER");
+            health = health - 50;
         }
     }
 }
