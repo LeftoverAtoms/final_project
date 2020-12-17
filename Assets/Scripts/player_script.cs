@@ -43,7 +43,7 @@ public class player_script : MonoBehaviour
             if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))               //Checks if the raycast hit an enemy and if so it deletes it.
             {
                 Destroy(hit.transform.gameObject);
-                Debug.Log("DAMGE_ENEMY");
+
                 global_script.playerScore = global_script.playerScore + 50;
                 entity_spawn_script.currentEnemyCount--;
             }
@@ -90,7 +90,7 @@ public class player_script : MonoBehaviour
             }
         }
 
-        if (health == 0)
+        if (health <= 0)
         {
             player.SetActive(false);
             mouseCursor.SetActive(false);

@@ -31,7 +31,6 @@ public class projectile_script : MonoBehaviour
         if (Collision.gameObject.tag == "enemy" | Collision.gameObject.tag == "level")
         {
             Destroy(instantiate_projectile);
-            Debug.Log("DETECTED_COLLISION");
         }
     }
 }
