@@ -13,16 +13,17 @@ public class player_script : MonoBehaviour
     public GameObject player;
     public GameObject enemy;
 
-    private float healthCurrentTime;
-    private int maxHealth = 100;
-    private float health = 100;
+    private int playerMaxHealth = 100;
+    private float playerHealth = 100;
+    private float playerHealthTime;
     public float displayHealth;
 
-    private float moveSpeed = 0.125f;
+    private float playerMoveSpeed = 0.125f;
 
-    private float rateOfFire = 0.125f;
     private float currentTime;
-    private bool hasShot;
+    private bool playerHasShot;
+    public float rateOfFire;
+    public int ammo;
 
     void FixedUpdate()
     {
@@ -37,26 +38,29 @@ public class player_script : MonoBehaviour
         LayerMask mask = LayerMask.GetMask("enemy");
         RaycastHit hit;
 
-        if (Input.GetKey(KeyCode.Mouse0) && hasShot == false)
+        if (Input.GetKey(KeyCode.Mouse0) && playerHasShot == false && ammo > 0)
         {
             projectile_script.ProjectilePrefab();                                                                      //Spawns the projectile prefab.
+            playerHasShot = true;
+            ammo--;
             if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))               //Checks if the raycast hit an enemy and if so it deletes it.
             {
                 Destroy(hit.transform.gameObject);
 
                 global_script.playerScore = global_script.playerScore + 50;
                 entity_spawn_script.currentEnemyCount--;
+                return;
             }
-            hasShot = true;
         }
 
-        if (hasShot)                                                                                                   //If "hasShot" = true then counts up to compare the time with "rateOfFire" and resets.
+        if (playerHasShot)                                                                                             //If "playerHasShot" = true then counts up to compare the time with "rateOfFire" and resets.
         {
             currentTime = currentTime + 1 * Time.deltaTime;
             if (currentTime > rateOfFire)
             {
-                hasShot = false;
+                playerHasShot = false;
                 currentTime = 0;
+                return;
             }
         }
     }
@@ -66,34 +70,33 @@ public class player_script : MonoBehaviour
         float keyboardX = Input.GetAxis("Horizontal");                                                                 //Input for keyboard.
         float keyboardY = Input.GetAxis("Vertical");                                                                   //Input for keyboard.
         player.transform.LookAt(mouseCursor.transform.position);                                                       //Mouse movement dictates where the player will look.
-        player.transform.Translate(keyboardX * moveSpeed, 0, keyboardY * moveSpeed, Space.World);                      //Player movement.
-        mouseCursor.transform.Translate(keyboardX * moveSpeed, 0, keyboardY * moveSpeed, Space.World);                 //Janky way to make the mouseCursor GameObject to move with the player.
+        player.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);          //Player movement.
+        mouseCursor.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);     //Janky way to make the mouseCursor GameObject to move with the player.
     }
 
     void HealthSystem()
     {
-        displayHealth = (Mathf.RoundToInt(health));
-        if (health < maxHealth)
+        displayHealth = (Mathf.RoundToInt(playerHealth));
+        displayHealth = Mathf.Clamp(displayHealth, 0, 100);
+        if (playerHealth < playerMaxHealth)
         {
-            healthCurrentTime = healthCurrentTime + 1 * Time.deltaTime;
-            if (healthCurrentTime > 1)
+            playerHealthTime = playerHealthTime + 1 * Time.deltaTime;
+            if (playerHealthTime == 1)
             {
-                health = health + 25 * Time.deltaTime;
-                if (health == maxHealth)
+                playerHealth = playerHealth + 25 * Time.deltaTime;
+                if (playerHealth == playerMaxHealth)
                 {
-                    healthCurrentTime = 0;
-                }
-                else if (health > maxHealth)
-                {
+                    playerHealthTime = 0;
                     return;
                 }
             }
         }
 
-        if (health <= 0)
+        if (playerHealth <= 0)
         {
             player.SetActive(false);
             mouseCursor.SetActive(false);
+            return;
         }
     }
 
@@ -101,7 +104,9 @@ public class player_script : MonoBehaviour
     {
         if (Collision.gameObject.tag == "enemy")
         {
-            health = health - 50;
+            playerHealth = playerHealth - 50;
+            playerHealthTime = 0;
+            return;
         }
     }
 }

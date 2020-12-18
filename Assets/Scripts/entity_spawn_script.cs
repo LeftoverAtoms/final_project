@@ -9,6 +9,7 @@ public class entity_spawn_script : MonoBehaviour
     public float currentEnemyCount;
 
     public GameObject instantiate_enemy;
+    public GameObject ammoBox;
     public GameObject enemy;
 
     private int randomSpawn;
@@ -23,6 +24,8 @@ public class entity_spawn_script : MonoBehaviour
         if (currentEnemyCount < currentEnemyLimit)                                                                     //If the current amount of enemies exceeds the max enemies then nothing happens until more room is available.
         {
             randomSpawn = Random.Range(0, 4);
+            milestoneEnemyCounter++;
+            currentEnemyCount++;
             if (randomSpawn == 0)
             {
                 instantiate_enemy = Instantiate(enemy, new Vector3(30, 0, 0), transform.rotation);
@@ -39,16 +42,15 @@ public class entity_spawn_script : MonoBehaviour
             {
                 instantiate_enemy = Instantiate(enemy, new Vector3(0, 0, -30), transform.rotation);
             }
-            milestoneEnemyCounter++;
-            currentEnemyCount++;
         }
         else
         {
-            return;
+
         }
 
-        if (milestoneEnemyCounter > 25)
+        if (milestoneEnemyCounter == 5)
         {
+            Instantiate(ammoBox, new Vector3(0, 0, 0), transform.rotation);
             currentEnemyLimit = currentEnemyLimit + 5;
             milestoneEnemyCounter = 0;
         }
