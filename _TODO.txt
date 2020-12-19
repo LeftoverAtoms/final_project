@@ -1,2 +1,3 @@
-Shared variables should be placed into a global script to make everything more orderly.
-Optimize if statements to improve fps.
+Spend points to upgrade weapon firerate and damage.
+Enemy health increase each wave.
+Enemy wave mechanic.

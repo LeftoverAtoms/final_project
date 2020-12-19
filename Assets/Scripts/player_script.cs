@@ -9,28 +9,23 @@ public class player_script : MonoBehaviour
     public global_script global_script;
     public mouse_script mouse_script;
 
-    public GameObject mouseCursor;
-    public GameObject player;
-    public GameObject enemy;
-
+    private float playerHealthTimeFloat;
+    private int playerHealthTime;
     private int playerMaxHealth = 100;
-    private float playerHealth = 100;
-    private float playerHealthTime;
-    public float displayHealth;
+    public int playerHealth = 100;
 
     private float playerMoveSpeed = 0.125f;
 
-    private float currentTime;
-    private bool playerHasShot;
+    public float playerShotTime;
     public float rateOfFire;
-    public int ammo;
+    public int playerAmmo;
 
     void FixedUpdate()
     {
         mouse_script.MouseController();
-        Projectile();
-        HealthSystem();
         PlayerController();
+        PlayerHealth();
+        Projectile();
     }
 
     void Projectile()
@@ -38,65 +33,58 @@ public class player_script : MonoBehaviour
         LayerMask mask = LayerMask.GetMask("enemy");
         RaycastHit hit;
 
-        if (Input.GetKey(KeyCode.Mouse0) && playerHasShot == false && ammo > 0)
+        playerShotTime += Time.deltaTime;
+
+        if (Input.GetKey(KeyCode.Mouse0) && playerShotTime >= rateOfFire && playerAmmo > 0)
         {
-            projectile_script.ProjectilePrefab();                                                                      //Spawns the projectile prefab.
-            playerHasShot = true;
-            ammo--;
-            if (Physics.Raycast(player.transform.position, player.transform.forward, out hit, 50, mask))               //Checks if the raycast hit an enemy and if so it deletes it.
+            projectile_script.ProjectilePrefab();
+
+            playerShotTime = 0;
+            playerAmmo--;
+
+            if (Physics.Raycast(global_script.player.transform.position, global_script.player.transform.forward, out hit, 50, mask))
             {
                 Destroy(hit.transform.gameObject);
 
-                global_script.playerScore = global_script.playerScore + 50;
+                entity_spawn_script.milestoneEnemyCount++;
                 entity_spawn_script.currentEnemyCount--;
-                return;
-            }
-        }
-
-        if (playerHasShot)                                                                                             //If "playerHasShot" = true then counts up to compare the time with "rateOfFire" and resets.
-        {
-            currentTime = currentTime + 1 * Time.deltaTime;
-            if (currentTime > rateOfFire)
-            {
-                playerHasShot = false;
-                currentTime = 0;
-                return;
+                global_script.playerScore += 50;
             }
         }
     }
 
     void PlayerController()
     {
-        float keyboardX = Input.GetAxis("Horizontal");                                                                 //Input for keyboard.
-        float keyboardY = Input.GetAxis("Vertical");                                                                   //Input for keyboard.
-        player.transform.LookAt(mouseCursor.transform.position);                                                       //Mouse movement dictates where the player will look.
-        player.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);          //Player movement.
-        mouseCursor.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);     //Janky way to make the mouseCursor GameObject to move with the player.
+        float keyboardX = Input.GetAxis("Horizontal");
+        float keyboardY = Input.GetAxis("Vertical");
+
+        global_script.player.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);
+        global_script.mouseCursor.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);
+
+        Vector3 lookAtPosition = new Vector3(global_script.mouseCursor.transform.position.x, global_script.player.transform.position.y, global_script.mouseCursor.transform.position.z);
+        global_script.player.transform.LookAt(lookAtPosition);
     }
 
-    void HealthSystem()
+    void PlayerHealth()
     {
-        displayHealth = (Mathf.RoundToInt(playerHealth));
-        displayHealth = Mathf.Clamp(displayHealth, 0, 100);
         if (playerHealth < playerMaxHealth)
         {
-            playerHealthTime = playerHealthTime + 1 * Time.deltaTime;
-            if (playerHealthTime == 1)
+            playerHealthTimeFloat += 0.25f * Time.deltaTime;
+            playerHealthTime = Mathf.RoundToInt(playerHealthTimeFloat);
+            if (playerHealthTime >= 1)
             {
-                playerHealth = playerHealth + 25 * Time.deltaTime;
-                if (playerHealth == playerMaxHealth)
+                playerHealth += 1;
+                if (playerHealth >= playerMaxHealth)
                 {
                     playerHealthTime = 0;
-                    return;
                 }
             }
         }
 
         if (playerHealth <= 0)
         {
-            player.SetActive(false);
-            mouseCursor.SetActive(false);
-            return;
+            global_script.player.SetActive(false);
+            global_script.mouseCursor.SetActive(false);
         }
     }
 
@@ -104,9 +92,8 @@ public class player_script : MonoBehaviour
     {
         if (Collision.gameObject.tag == "enemy")
         {
-            playerHealth = playerHealth - 50;
-            playerHealthTime = 0;
-            return;
+            playerHealthTimeFloat = 0;
+            playerHealth -= 50;
         }
     }
 }

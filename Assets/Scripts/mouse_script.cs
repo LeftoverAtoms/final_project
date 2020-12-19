@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class mouse_script : MonoBehaviour
 {
-    public GameObject mouseCursor;
+    public global_script global_script;
+
+    public float mouseSpeed;
 
     public void MouseController()
     {
-        Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
-        pos.x = Mathf.Clamp01(pos.x);
-        pos.y = Mathf.Clamp01(pos.y);
-        transform.position = Camera.main.ViewportToWorldPoint(pos);
+        float mouseX = Input.GetAxisRaw("Mouse X") * mouseSpeed;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSpeed;
 
-        float mouseX = Input.GetAxisRaw("Mouse X");
-        float mouseY = Input.GetAxisRaw("Mouse Y");
-
-        mouseCursor.transform.Translate(mouseX, 0, mouseY);
+        Vector3 MousePos = global_script.mouseCursor.transform.position + new Vector3(mouseX, 0, mouseY);
+        Vector3 offset = MousePos - global_script.player.transform.position;
+        global_script.mouseCursor.transform.position = global_script.player.transform.position + Vector3.ClampMagnitude(offset, 2);
     }
 }
-
-//public GameObject player;
-
-//Vector3 MousePos = mouseCursor.transform.position + new Vector3(mouseX, 0, mouseY);
-//Vector3 offset = MousePos - player.transform.position;
-//mouseCursor.transform.position = player.transform.position + Vector3.ClampMagnitude(offset, radius);

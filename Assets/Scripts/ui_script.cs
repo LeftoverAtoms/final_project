@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,13 +9,13 @@ public class ui_script : MonoBehaviour
     public player_script player_script;
 
     public Text score;
-    public Text ammo;
-    public Text health;
+    public Text playerAmmo;
+    public Slider healthBar;
 
     void FixedUpdate()
     {
         score.text = "Score: " + global_script.playerScore;
-        ammo.text = "Ammo: " + player_script.ammo;
-        health.text = "Health: " + player_script.displayHealth;
+        playerAmmo.text = "Ammo: " + player_script.playerAmmo;
+        healthBar.value = player_script.playerHealth;
     }
 }

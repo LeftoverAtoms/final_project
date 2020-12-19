@@ -9,6 +9,8 @@ public class enemy_script : MonoBehaviour
     private GameObject player;
     public GameObject enemy;
 
+    private float enemyHealth = 100;
+
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -17,6 +19,20 @@ public class enemy_script : MonoBehaviour
 
     void FixedUpdate()
     {
-        agent.destination = player.transform.position;
+        EnemyHealth();
+        EnemyAI();
+    }
+
+    void EnemyHealth()
+    {
+        if (enemyHealth <= 0)
+        {
+
+        }
+    }
+
+    void EnemyAI()
+    {
+        agent.SetDestination(player.transform.position);
     }
 }

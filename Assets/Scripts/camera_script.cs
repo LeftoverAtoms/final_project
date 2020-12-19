@@ -9,6 +9,6 @@ public class camera_script : MonoBehaviour
 
     public void FixedUpdate()
     {
-        cam.transform.position = new Vector3(player.transform.position.x, 20, player.transform.position.z);
+        cam.transform.position = new Vector3(player.transform.position.x, 25, player.transform.position.z);
     }
 }

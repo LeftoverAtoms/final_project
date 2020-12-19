@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class global_script : MonoBehaviour
 {
-    public float playerScore;
+    public GameObject mouseCursor;
     public GameObject player;
+    public GameObject enemy;
+
+    public float playerScore;
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
