@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class player_script : MonoBehaviour
@@ -10,15 +10,17 @@ public class player_script : MonoBehaviour
     public mouse_script mouse_script;
 
     private float playerHealthTimeFloat;
-    private int playerHealthTime;
     private int playerMaxHealth = 100;
     public int playerHealth = 100;
+    private int playerHealthTime;
+
+    private float rateOfFire = 0.120f;
+    private float playerShotTime;
+    public int playerAmmo = 25;
 
     private float playerMoveSpeed = 0.125f;
 
-    public float playerShotTime;
-    public float rateOfFire;
-    public int playerAmmo;
+    public GameObject restartHint;
 
     void FixedUpdate()
     {
@@ -49,6 +51,7 @@ public class player_script : MonoBehaviour
                 entity_spawn_script.milestoneEnemyCount++;
                 entity_spawn_script.currentEnemyCount--;
                 global_script.playerScore += 50;
+                playerAmmo += 2;
             }
         }
     }
@@ -58,8 +61,8 @@ public class player_script : MonoBehaviour
         float keyboardX = Input.GetAxis("Horizontal");
         float keyboardY = Input.GetAxis("Vertical");
 
-        global_script.player.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);
         global_script.mouseCursor.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);
+        global_script.player.transform.Translate(keyboardX * playerMoveSpeed, 0, keyboardY * playerMoveSpeed, Space.World);
 
         Vector3 lookAtPosition = new Vector3(global_script.mouseCursor.transform.position.x, global_script.player.transform.position.y, global_script.mouseCursor.transform.position.z);
         global_script.player.transform.LookAt(lookAtPosition);
@@ -69,8 +72,8 @@ public class player_script : MonoBehaviour
     {
         if (playerHealth < playerMaxHealth)
         {
-            playerHealthTimeFloat += 0.25f * Time.deltaTime;
             playerHealthTime = Mathf.RoundToInt(playerHealthTimeFloat);
+            playerHealthTimeFloat += 0.25f * Time.deltaTime;
             if (playerHealthTime >= 1)
             {
                 playerHealth += 1;
@@ -83,8 +86,9 @@ public class player_script : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            global_script.player.SetActive(false);
             global_script.mouseCursor.SetActive(false);
+            global_script.player.SetActive(false);
+            restartHint.SetActive(true);
         }
     }
 

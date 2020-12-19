@@ -1,5 +1,6 @@
-﻿using System.Collections;
+﻿using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class global_script : MonoBehaviour
@@ -14,5 +15,13 @@ public class global_script : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    void FixedUpdate()
+    {
+        if (Input.GetKey(KeyCode.Backspace))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }
