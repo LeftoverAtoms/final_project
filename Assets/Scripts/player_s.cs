@@ -12,7 +12,7 @@ public class player_s : MonoBehaviour
     private int playerMaxHealth = 100;
     private int playerHealthTime;
 
-    private float rateOfFire = 0.1f;
+    private float rateOfFire = 0.3f;
     private float playerShotTime;
 
     private float playerMoveSpeed = 0.125f;
