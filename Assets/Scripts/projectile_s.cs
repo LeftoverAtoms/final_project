@@ -2,9 +2,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class projectile_script : MonoBehaviour
+public class projectile_s : MonoBehaviour
 {
-    public global_script global_script;
+    public global_s global_s;
 
     public GameObject instantiate_projectile;
     public Rigidbody projectile_rb;
@@ -22,7 +22,7 @@ public class projectile_script : MonoBehaviour
 
     public void ProjectilePrefab()
     {
-        instantiate_projectile = Instantiate(projectile, global_script.player.transform.position, global_script.player.transform.rotation);
+        instantiate_projectile = Instantiate(projectile, global_s.player.transform.position, global_s.player.transform.rotation);
         Destroy(instantiate_projectile, 1.5f);
     }
 

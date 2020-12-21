@@ -1,3 +1,6 @@
 Spend points to upgrade weapon firerate and damage.
 Enemy health increase each wave.
 Enemy wave mechanic.
+Each round a pod falls from the sky and lets you buy things but after the next round begins it flys back up.
+
+***Put enemy into the scene, disable it, and make the script make clones of that instead of being a prefab.

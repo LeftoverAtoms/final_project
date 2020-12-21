@@ -3,13 +3,11 @@ using System.Collections;
 using UnityEngine.AI;
 using UnityEngine;
 
-public class enemy_script : MonoBehaviour
+public class enemy_s : MonoBehaviour
 {
     private NavMeshAgent agent;
     private GameObject player;
     public GameObject enemy;
-
-    private float enemyHealth = 100;
 
     void Start()
     {
@@ -19,16 +17,7 @@ public class enemy_script : MonoBehaviour
 
     void FixedUpdate()
     {
-        EnemyHealth();
         EnemyAI();
-    }
-
-    void EnemyHealth()
-    {
-        if (enemyHealth <= 0)
-        {
-
-        }
     }
 
     void EnemyAI()
